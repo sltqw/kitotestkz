@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>kitotest.kz — Liquid Glass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        /* =================================
+           iOS 27 — TITANIUM LIQUID GLASS
+        ================================= */
+        :root {
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text: #f5f6f8;
+            --muted: rgba(245, 246, 248, 0.62);
+            --blur: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 18% 15%, rgba(160, 166, 178, 0.22), transparent 42%),
+                radial-gradient(circle at 82% 80%, rgba(110, 116, 128, 0.24), transparent 45%),
+                linear-gradient(145deg, #141619 0%, #23262b 48%, #1a1c20 100%);
+            background-attachment: fixed;
+        }
+
+        @keyframes glassEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(10px) scale(0.985);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: translateY(14px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .anim-enter {
+            animation: glassEnter 0.42s var(--ease-spring) both;
+        }
+
+        .anim-modal {
+            animation: modalPop 0.36s var(--ease-spring) both;
+        }
+
+        /* Subject tiles — visual placeholders only */
+        .subject-showcase { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+        @media (min-width:640px) { .subject-showcase { grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; } }
+        .subject-tile { position:relative; min-height:112px; padding:17px; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.15); background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 30px rgba(0,0,0,.12); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); }
+.subject-action { width:100%; min-width:0; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; text-align:left; gap:0; border-radius:22px; padding:17px; color:var(--text); }
+        .subject-action:hover { border-color:rgba(255,255,255,.34); background:linear-gradient(145deg,rgba(255,255,255,.19),rgba(255,255,255,.07)); }
+        .subject-submit { display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:12px; padding:8px 11px; border-radius:13px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.16); font-size:12px; font-weight:700; letter-spacing:.02em; }
+        .subject-submit span { font-size:17px; line-height:1; }
+        .subject-tile:after { content:""; position:absolute; width:90px;height:90px;right:-28px;bottom:-38px;border-radius:50%;background:var(--subject-glow,rgba(255,255,255,.12));filter:blur(18px);pointer-events:none; }
+        .subject-icon { width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);font-size:21px;margin-bottom:12px; }
+        .subject-soon { display:inline-flex; margin-top:7px; padding:3px 8px; border-radius:999px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.58); font-size:10px; letter-spacing:.04em; }
+
+        /* ROUND & TRANSPARENT BUTTONS */
+        button,
+        .pill-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9999px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(var(--blur)) saturate(160%);
+            -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.24),
+                0 6px 20px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition:
+                background 0.28s var(--ease-smooth),
+                border-color 0.28s var(--ease-smooth),
+                transform 0.34s var(--ease-spring),
+                box-shadow 0.34s var(--ease-spring);
+        }
+
+        button:hover,
+        .pill-btn:hover {
+            background: rgba(255, 255, 255, 0.20);
+            border-color: rgba(255, 255, 255, 0.36);
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.32),
+                0 10px 26px rgba(0, 0, 0, 0.32);
+        }
+
+        button:active,
+        .pill-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.26);
+            transition-duration: 0.14s;
+        }
+
+        button.active-pill {
+            background: rgba(255, 255, 255, 0.26);
+            border-color: rgba(255, 255, 255, 0.48);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.35),
+                0 8px 24px rgba(0, 0, 0, 0.32);
+        }
+
+        /* TITANIUM GLASS SURFACES */
+        .glass,
+        .card,
+        .panel,
+        .navbar {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(28px) saturate(165%);
+            -webkit-backdrop-filter: blur(28px) saturate(165%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 26px;
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.16),
+                0 14px 36px rgba(0, 0, 0, 0.28);
+            transition:
+                transform 0.36s var(--ease-spring),
+                border-color 0.28s var(--ease-smooth),
+                background 0.28s var(--ease-smooth),
+                box-shadow 0.36s var(--ease-spring);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.09);
+            box-shadow:
+                inset 0 1px 1px rgba(255, 255, 255, 0.22),
+                0 18px 42px rgba(0, 0, 0, 0.34);
+        }
+
+        .navbar {
+            border-radius: 9999px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            padding: 12px 16px;
+            font-size: 14px;
+            outline: none;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            transition:
+                border-color 0.26s var(--ease-smooth),
+                background 0.26s var(--ease-smooth),
+                box-shadow 0.32s var(--ease-spring),
+                transform 0.3s var(--ease-spring);
+        }
+
+        select option {
+            background: #23262b;
+            color: #f5f6f8;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--muted);
+        }
+
+        #avg-ring {
+            transition: stroke-dashoffset 0.65s var(--ease-spring);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.22);
+            border-radius: 9999px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    
+
+        /* =========================================
+           LIQUID GLASS PREMIUM INTERACTIONS
+           Added without changing test/application logic
+        ========================================= */
+        :root {
+            --liquid-blue: rgba(10, 132, 255, .34);
+            --liquid-violet: rgba(132, 88, 255, .25);
+            --liquid-surface: rgba(255, 255, 255, .075);
+            --liquid-edge: rgba(255, 255, 255, .24);
+        }
+
+        body { position: relative; isolation: isolate; padding-bottom: 100px !important; }
+        body::before, body::after {
+            content: ""; position: fixed; z-index: -1; pointer-events: none;
+            width: 48vw; height: 48vw; max-width: 620px; max-height: 620px;
+            border-radius: 50%; filter: blur(85px); opacity: .55;
+            animation: liquidFloat 18s ease-in-out infinite alternate;
+        }
+        body::before { top: -18vw; left: -14vw; background: radial-gradient(circle, var(--liquid-blue), transparent 68%); }
+        body::after { right: -18vw; bottom: -22vw; background: radial-gradient(circle, var(--liquid-violet), transparent 68%); animation-delay: -8s; }
+        @keyframes liquidFloat { from { transform: translate3d(-2%, 0, 0) scale(.94); } to { transform: translate3d(5%, 7%, 0) scale(1.12); } }
+
+        .glass, .card, .panel, .navbar {
+            border-color: var(--liquid-edge);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 16px 42px rgba(0,0,0,.28);
+        }
+        .glass::before, .card::before, .panel::before, .navbar::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit;
+            pointer-events: none; opacity: .45;
+            background: linear-gradient(125deg, rgba(255,255,255,.12), transparent 34%, transparent 72%, rgba(255,255,255,.045));
+        }
+        .glass, .card, .panel, .navbar { position: relative; overflow: hidden; }
+        button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 2px solid rgba(130,190,255,.9); outline-offset: 3px;
+        }
+        button:hover { box-shadow: 0 0 22px rgba(80,150,255,.17), inset 0 1px 1px rgba(255,255,255,.3); }
+        .card { transform-style: preserve-3d; will-change: transform; }
+        .card:hover { border-color: rgba(160,200,255,.42); }
+        #runner-panel, #auth-modal > div, #admin-create-form { box-shadow: 0 24px 80px rgba(0,0,0,.42), inset 0 1px 1px rgba(255,255,255,.22); }
+        #toast { box-shadow: 0 12px 36px rgba(0,0,0,.32), 0 0 24px rgba(10,132,255,.12); }
+
+        /* Bottom floating navigation */
+        .liquid-dock {
+            position: fixed; z-index: 60; left: 50%; bottom: max(16px, env(safe-area-inset-bottom));
+            transform: translateX(-50%); display: flex; align-items: center; gap: 7px;
+            padding: 8px; border-radius: 25px; max-width: calc(100vw - 24px);
+            background: rgba(30,33,43,.68); border: 1px solid rgba(255,255,255,.22);
+            backdrop-filter: blur(34px) saturate(190%); -webkit-backdrop-filter: blur(34px) saturate(190%);
+            box-shadow: 0 14px 42px rgba(0,0,0,.42), inset 0 1px 1px rgba(255,255,255,.25);
+        }
+        .liquid-dock button {
+            min-width: 48px; min-height: 46px; padding: 8px 12px; border-radius: 17px;
+            background: rgba(255,255,255,.075); border-color: rgba(255,255,255,.12);
+            font-size: 12px; gap: 5px; white-space: nowrap;
+        }
+        .liquid-dock button[aria-current="page"] {
+            background: rgba(10,132,255,.25); border-color: rgba(130,190,255,.48);
+            box-shadow: 0 0 20px rgba(10,132,255,.2), inset 0 1px 1px rgba(255,255,255,.24);
+        }
+        .liquid-dock .dock-icon { font-size: 17px; line-height: 1; }
+
+        /* Ripple */
+        .liquid-ripple {
+            position: absolute; border-radius: 50%; pointer-events: none;
+            background: rgba(255,255,255,.38); transform: scale(0);
+            animation: liquidRipple .62s ease-out forwards;
+        }
+        @keyframes liquidRipple { to { transform: scale(4.2); opacity: 0; } }
+
+        /* Startup glass loader */
+        .liquid-startup {
+            position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center;
+            justify-items: center; gap: 17px; background: rgba(12,14,20,.94);
+            backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+            transition: opacity .5s ease, visibility .5s ease;
+        }
+        .liquid-startup.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .liquid-startup-orb {
+            width: 58px; height: 58px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,.12); border-top-color: #9bcaff;
+            border-right-color: #927cff; box-shadow: 0 0 28px rgba(70,145,255,.32);
+            animation: liquidSpin .9s linear infinite;
+        }
+        .liquid-startup-label { color: rgba(255,255,255,.72); font-size: 11px; letter-spacing: .2em; }
+        @keyframes liquidSpin { to { transform: rotate(360deg); } }
+
+        /* Desktop-only glowing cursor */
+        .liquid-cursor {
+            position: fixed; z-index: 999; left: 0; top: 0; width: 17px; height: 17px;
+            border: 1px solid rgba(220,238,255,.85); border-radius: 50%;
+            background: rgba(70,145,255,.18); box-shadow: 0 0 20px rgba(70,145,255,.45);
+            pointer-events: none; transform: translate(-50%,-50%); opacity: 0;
+            transition: width .18s ease, height .18s ease, opacity .2s ease, background .2s ease;
+        }
+        .liquid-cursor.is-visible { opacity: 1; }
+        .liquid-cursor.is-hover { width: 34px; height: 34px; background: rgba(70,145,255,.1); }
+
+        @media (max-width: 640px) {
+            body { padding-bottom: 105px !important; }
+            .liquid-dock { gap: 4px; padding: 6px; }
+            .liquid-dock button { min-width: 43px; min-height: 43px; padding: 7px 9px; font-size: 11px; }
+            .liquid-dock .dock-icon { font-size: 16px; }
+        }
+        @media (pointer: coarse) { .liquid-cursor { display: none !important; } }
+        @media (prefers-reduced-motion: reduce) {
+            body::before, body::after, .liquid-ripple, .liquid-startup-orb { animation: none !important; }
+            .liquid-dock, .liquid-startup, .liquid-cursor { transition: none !important; }
+        }
+
+
+        .quick-icon-btn{width:34px;height:34px;min-width:34px;padding:4px!important;border-radius:12px!important;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.09)!important;border:1px solid rgba(255,255,255,.17)!important;box-shadow:inset 0 1px rgba(255,255,255,.16),0 4px 12px rgba(0,0,0,.18)!important}
+        .quick-icon-btn img{width:23px;height:23px;object-fit:contain;border-radius:7px;display:block}
+        .quick-icon-btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+        @media(max-width:520px){.quick-icon-btn{width:30px;height:30px;min-width:30px;padding:3px!important}.quick-icon-btn img{width:21px;height:21px}}
+
+        /* COMMUNITY + ACCOUNT EXPERIENCE */
+        body { padding-bottom: 112px !important; }
+        body::before, body::after { pointer-events:none; }
+        .navbar { padding-right: 18px; }
+        #nav-tests,#nav-create,#nav-results,#auth-header-btn { display:none !important; }
+        .liquid-dock { position:fixed; z-index:60; left:50%; bottom:18px; transform:translateX(-50%); display:flex; align-items:center; gap:5px; padding:8px; border:1px solid rgba(255,255,255,.2); border-radius:28px; background:rgba(24,27,33,.58); backdrop-filter:blur(30px) saturate(180%); -webkit-backdrop-filter:blur(30px) saturate(180%); box-shadow:0 18px 55px rgba(0,0,0,.48), inset 0 1px rgba(255,255,255,.22); max-width:calc(100vw - 24px); }
+        .liquid-dock button { min-width:68px; padding:10px 12px; border:1px solid transparent; border-radius:19px; background:transparent; box-shadow:none; display:flex; flex-direction:column; gap:3px; font-size:11px; color:rgba(255,255,255,.68); }
+        .liquid-dock button span:first-child { font-size:19px; line-height:1.1; }
+        .liquid-dock button.active { background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.19); color:#fff; box-shadow:inset 0 1px rgba(255,255,255,.22),0 5px 18px rgba(0,0,0,.2); }
+        .liquid-dock button:hover { transform:translateY(-3px); }
+        .modal-backdrop { background:rgba(0,0,0,.68); backdrop-filter:blur(18px); }
+        .account-card { border-radius:30px; background:rgba(28,31,38,.84); border-color:rgba(255,255,255,.2); box-shadow:0 30px 100px rgba(0,0,0,.6),inset 0 1px rgba(255,255,255,.2); }
+        .profile-avatar,.welcome-logo { width:76px;height:76px;border-radius:26px;display:grid;place-items:center;margin:0 auto;font-size:32px;font-weight:800;background:linear-gradient(145deg,rgba(255,255,255,.3),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.3);box-shadow:0 12px 38px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.35); }
+        .chat-shell { overflow:hidden; border-radius:26px; }
+        .chat-messages { height:min(54vh,560px); min-height:300px; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
+        .chat-empty { margin:auto; color:rgba(255,255,255,.48); text-align:center; }
+        .chat-message { max-width:min(82%,560px); align-self:flex-start; padding:11px 14px; border:1px solid rgba(255,255,255,.13); border-radius:18px 18px 18px 5px; background:rgba(255,255,255,.08); box-shadow:inset 0 1px rgba(255,255,255,.1); overflow-wrap:anywhere; }
+        .chat-message.mine { align-self:flex-end; border-radius:18px 18px 5px 18px; background:rgba(112,145,255,.2); border-color:rgba(160,180,255,.25); }
+        .chat-meta { display:flex; gap:10px; align-items:center; font-size:11px; color:rgba(255,255,255,.48); margin-bottom:5px; }
+        .chat-author { color:rgba(255,255,255,.85); font-weight:700; }
+        .chat-text { white-space:pre-wrap; font-size:14px; line-height:1.5; }
+        .chat-compose { display:flex; gap:10px; padding:14px; border-top:1px solid rgba(255,255,255,.1); }
+        .chat-compose input { flex:1; min-width:0; }
+        .chat-compose button { width:48px; flex:none; font-size:20px; }
+        .chat-online { display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:99px;background:rgba(255,255,255,.07);font-size:12px;color:rgba(255,255,255,.7); }
+        .online-dot { width:8px;height:8px;border-radius:50%;background:#55e69a;box-shadow:0 0 12px #55e69a; }
+        .welcome-screen { position:fixed;inset:0;z-index:100;display:grid;place-items:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 40%,rgba(104,119,155,.28),transparent 38%),linear-gradient(145deg,#101217,#252a33 55%,#111318);transition:opacity .65s ease,visibility .65s ease;overflow:hidden; }
+        .welcome-screen.dismissed { opacity:0;visibility:hidden;pointer-events:none; }
+        .welcome-orb { position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(138,158,255,.16);filter:blur(70px);animation:welcomeFloat 7s ease-in-out infinite alternate; }
+        .welcome-content { position:relative;z-index:1; }
+        .welcome-button { padding:14px 28px;border-radius:99px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.3);box-shadow:0 12px 40px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.3); }
+        .welcome-button span { margin-left:14px; }
+        @keyframes welcomeFloat { from{transform:translate(-45px,-25px) scale(.9)} to{transform:translate(45px,25px) scale(1.2)} }
+        @media(max-width:520px){ .liquid-dock{bottom:10px;gap:0;padding:6px;border-radius:23px;width:calc(100vw - 16px);justify-content:space-around}.liquid-dock button{min-width:0;flex:1;padding:9px 3px;font-size:10px}.chat-messages{height:55vh;padding:12px}.chat-message{max-width:90%} }
+
+        /* Layout fixes: prevent horizontal overflow and keep the footer above the dock. */
+        html, body { width:100%; max-width:100%; overflow-x:hidden; }
+        body { min-width:320px; padding-bottom:120px !important; }
+        main, header, footer { min-width:0; }
+        .liquid-dock { width:max-content; max-width:calc(100vw - 20px); bottom:max(12px, env(safe-area-inset-bottom)); }
+        .liquid-dock button { min-width:0; flex:1 1 auto; }
+        footer { margin-bottom:14px; }
+        @media(max-width:520px) {
+          body { padding-left:10px !important; padding-right:10px !important; padding-bottom:112px !important; }
+          .liquid-dock { width:calc(100vw - 16px); gap:2px; padding:5px; }
+          .liquid-dock button { min-width:0; padding:8px 2px; font-size:9px; }
+          .liquid-dock button span:first-child { font-size:17px; }
+          .chat-messages { height:55vh; min-height:240px; padding:12px; }
+          .chat-message { max-width:90%; }
+          .chat-compose { gap:6px; padding:10px; }
+          .chat-compose button { width:42px; }
+        }
+
+
+    
+        .anon-id-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid rgba(160,190,255,.24);border-radius:999px;background:rgba(115,145,255,.12);font-size:12px;color:rgba(255,255,255,.72);backdrop-filter:blur(16px)}
+        .anon-id-chip strong{color:#dce6ff;letter-spacing:.7px;font-variant-numeric:tabular-nums}
+        /* PREMIUM COMMUNITY CHAT — glass messenger refresh */
+        #view-chat{gap:18px!important;max-width:980px;margin:0 auto;width:100%}
+        #view-chat>.glass:first-child{position:relative;overflow:hidden;min-height:164px;padding:25px!important;border:1px solid rgba(255,255,255,.17);border-radius:30px;background:radial-gradient(circle at 8% 5%,rgba(116,145,255,.22),transparent 42%),linear-gradient(135deg,rgba(255,255,255,.105),rgba(255,255,255,.035));box-shadow:0 22px 70px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.18)}
+        #view-chat>.glass:first-child:after{content:"";position:absolute;width:190px;height:190px;right:-55px;top:-80px;border-radius:50%;background:rgba(116,145,255,.18);filter:blur(35px);pointer-events:none}
+        #view-chat>.glass:first-child h2{font-size:clamp(25px,4vw,34px);letter-spacing:-1.1px}
+        #view-chat>.glass:first-child .anon-id-chip{background:rgba(10,14,25,.28);border-color:rgba(190,205,255,.2)}
+        .chat-online{position:relative;z-index:1;white-space:nowrap;padding:9px 13px;border:1px solid rgba(255,255,255,.13);background:rgba(10,15,25,.28);box-shadow:inset 0 1px rgba(255,255,255,.08)}
+        .online-dot{animation:chatPulse 1.8s ease-in-out infinite}
+        @keyframes chatPulse{0%,100%{box-shadow:0 0 0 0 rgba(85,230,154,.5)}50%{box-shadow:0 0 0 6px rgba(85,230,154,0)}}
+        .chat-shell{border:1px solid rgba(255,255,255,.17)!important;border-radius:30px!important;background:linear-gradient(155deg,rgba(255,255,255,.09),rgba(255,255,255,.035))!important;box-shadow:0 25px 80px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.14)!important;backdrop-filter:blur(28px) saturate(150%);-webkit-backdrop-filter:blur(28px) saturate(150%)}
+        .chat-messages{height:min(58vh,620px);min-height:340px;padding:24px;gap:15px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent;background:radial-gradient(ellipse at 50% 0%,rgba(115,140,220,.06),transparent 65%)}
+        .chat-empty{max-width:300px;padding:24px;line-height:1.7;border:1px solid rgba(255,255,255,.1);border-radius:24px;background:rgba(255,255,255,.045)}
+        .chat-message{position:relative;max-width:min(78%,590px);padding:12px 16px;border:1px solid rgba(255,255,255,.14);border-radius:20px 20px 20px 7px;background:linear-gradient(145deg,rgba(255,255,255,.115),rgba(255,255,255,.055));box-shadow:0 8px 22px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.12);animation:chatBubbleIn .25s ease-out both}
+        .chat-message.mine{align-self:flex-end;border-color:rgba(155,177,255,.32);border-radius:20px 20px 7px 20px;background:linear-gradient(135deg,rgba(93,126,255,.32),rgba(143,104,255,.2));box-shadow:0 9px 25px rgba(52,70,160,.16),inset 0 1px rgba(255,255,255,.16)}
+        @keyframes chatBubbleIn{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+        .chat-meta{gap:9px;margin-bottom:6px;font-size:10px;letter-spacing:.2px}
+        .chat-author{font-size:11px;color:#c9d5ff;letter-spacing:.35px}
+        .chat-text{font-size:14px;line-height:1.62;color:rgba(255,255,255,.93)}
+        .chat-compose{align-items:center;gap:11px;padding:15px 17px;border-top:1px solid rgba(255,255,255,.1);background:rgba(7,10,17,.19)}
+        .chat-compose input{height:52px;padding:0 19px!important;border-radius:18px!important;border:1px solid rgba(255,255,255,.14)!important;background:rgba(255,255,255,.075)!important;box-shadow:inset 0 1px rgba(255,255,255,.07)!important;font-size:14px;transition:border-color .2s,background .2s}
+        .chat-compose input:focus{border-color:rgba(150,175,255,.5)!important;background:rgba(255,255,255,.1)!important}
+        .chat-compose button{width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:17px!important;border:1px solid rgba(190,205,255,.32)!important;background:linear-gradient(145deg,#829bff,#687ce8)!important;color:white;font-size:21px;box-shadow:0 8px 22px rgba(89,112,230,.28),inset 0 1px rgba(255,255,255,.35)!important;transition:transform .2s,filter .2s}
+        .chat-compose button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+        .chat-shell>p{padding:0 20px 15px!important;color:rgba(255,255,255,.38)!important;font-size:11px}
+        @media(max-width:520px){#view-chat{gap:12px!important}#view-chat>.glass:first-child{padding:18px!important;min-height:0;border-radius:24px;align-items:flex-start!important;flex-direction:column}#view-chat>.glass:first-child h2{font-size:26px}.chat-online{position:absolute;right:14px;top:15px;font-size:10px;padding:7px 9px}.chat-messages{height:57vh;min-height:260px;padding:15px 12px;gap:12px}.chat-message{max-width:91%;padding:10px 13px}.chat-compose{padding:11px;gap:8px}.chat-compose input{height:48px;font-size:13px}.chat-compose button{width:48px;height:48px}.chat-shell{border-radius:24px!important}}
+
+
+</style>
+</head>
+<body class="min-h-screen flex flex-col justify-between px-4 py-5 sm:px-6">
+    <!-- Top Header Bar -->
+    <header class="max-w-5xl w-full mx-auto anim-enter">
+        <nav class="navbar px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+            <a href="#top" onclick="switchTab('tests'); return false;" class="flex items-center gap-2.5 px-2 font-bold text-lg tracking-tight text-white">
+                <img
+                    src="s.jpg"
+                    alt="kitotest.kz"
+                    class="w-8 h-8 rounded-full object-cover border border-white/25 bg-white/10 shrink-0"
+                    onerror="this.onerror=null; this.src='https://placehold.co/64x64/23262b/f5f6f8?text=K';"
+                />
+                <span>kitotest.kz</span>
+            </a>
+
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="flex items-center gap-2 mr-1" aria-label="Быстрые разделы">
+                    <button type="button" class="quick-icon-btn" title="Музыка" aria-label="Музыка" onclick="openMusicPanel()">
+                        <img src="i.jpg" alt="Музыка" />
+                    </button>
+                    <button type="button" class="quick-icon-btn" title="Мессенджер" aria-label="Открыть мессенджер" onclick="goPage('chat')">
+                        <img src="o.jpg" alt="Мессенджер" />
+                    </button>
+                </div>
+                <button id="nav-tests" onclick="switchTab('tests')" class="active-pill"></button>
+                <button id="nav-create" onclick="switchTab('create')"></button>
+                <button id="nav-results" onclick="switchTab('results')"></button>
+
+
+                <button id="auth-header-btn" onclick="openAuthModal()"></button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="top" class="max-w-5xl w-full mx-auto my-6 flex-1 space-y-6">
+        <!-- Toast / Notice -->
+        <div id="toast" class="hidden glass anim-modal px-5 py-3 text-sm text-center text-white border border-white/25"></div>
+
+        <!-- TAB 1: TESTS -->
+        <section id="view-tests" class="space-y-5 anim-enter">
+            <div class="glass p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4">
+                <h1 id="tests-heading" class="text-2xl sm:text-3xl font-bold tracking-tight"></h1>
+                <div id="category-pills" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex items-end justify-between gap-3 px-1">
+                    <div><p class="text-[11px] uppercase tracking-[.22em] text-white/45">KITOTEST • SUBJECTS</p><h2 class="text-xl sm:text-2xl font-bold mt-1">Предметы</h2></div>
+                    <span class="text-xs text-white/45">7 направлений</span>
+                </div>
+                <div class="subject-showcase">
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(70,145,255,.35)" onclick="openSubjectTest('history')"><span class="subject-icon">🏛️</span><span class="font-semibold text-sm">История</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(160,110,255,.35)" onclick="openSubjectTest('math')"><span class="subject-icon">📐</span><span class="font-semibold text-sm">Математика</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(65,210,190,.32)" onclick="openSubjectTest('it')"><span class="subject-icon">💻</span><span class="font-semibold text-sm">Информатика</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(255,175,75,.32)" onclick="openSubjectTest('english')"><span class="subject-icon">🌍</span><span class="font-semibold text-sm">Английский язык</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(80,190,255,.32)" onclick="openSubjectTest('physics')"><span class="subject-icon">⚛️</span><span class="font-semibold text-sm">Физика</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(95,220,140,.32)" onclick="openSubjectTest('biology')"><span class="subject-icon">🧬</span><span class="font-semibold text-sm">Биология</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                    <button type="button" class="subject-tile subject-action" style="--subject-glow:rgba(255,125,125,.32)" onclick="openSubjectTest('geography')"><span class="subject-icon">🗺️</span><span class="font-semibold text-sm">География</span><span class="subject-submit">Тапсыру <span>→</span></span></button>
+                </div>
+                <p class="text-xs text-white/50 px-1">Аккаунтқа кіріңіз — содан кейін күрделі сұрақтар ашылады.</p>
+            </div>
+
+            <div id="tests-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+            <!-- Active Test Runner -->
+            <div id="runner-panel" class="hidden glass anim-modal p-6 space-y-5">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p id="runner-category" class="text-xs uppercase tracking-wider text-white/60"></p>
+                        <h2 id="runner-title" class="text-xl font-bold mt-0.5"></h2>
+                    </div>
+                    <button id="runner-close-btn" onclick="closeRunner()"></button>
+                </div>
+
+                <div class="flex items-center justify-between text-sm text-white/75">
+                    <span id="runner-progress"></span>
+                    <span id="runner-score"></span>
+                </div>
+
+                <div id="runner-question-box" class="space-y-4">
+                    <p id="runner-question" class="text-lg font-semibold leading-snug"></p>
+                    <div id="runner-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                    <div id="runner-feedback" class="hidden anim-enter p-4 rounded-2xl bg-white/10 border border-white/20 text-sm space-y-1"></div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <button id="runner-shuffle-btn" onclick="shuffleCurrentTest()"></button>
+                    <button id="runner-next-btn" onclick="nextQuestion()"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CREATE TEST (ADMIN ONLY) -->
+        <section id="view-create" class="hidden anim-enter">
+            <div id="admin-lock-card" class="glass p-8 text-center space-y-4 max-w-lg mx-auto">
+                <div class="w-12 h-12 rounded-full mx-auto flex items-center justify-center border border-white/25 bg-white/10 text-base font-bold">
+                    🔒
+                </div>
+                <h2 id="admin-lock-title" class="text-xl font-bold"></h2>
+                <p id="admin-lock-desc" class="text-sm text-white/65"></p>
+                <button id="admin-lock-btn" onclick="openAuthModal('admin')"></button>
+            </div>
+
+            <form id="admin-create-form" onsubmit="handleCreateTest(event)" class="hidden glass p-6 space-y-4 max-w-2xl mx-auto">
+                <div class="flex items-center justify-between">
+                    <h2 id="create-form-title" class="text-xl font-bold"></h2>
+                    <span id="create-admin-badge" class="text-xs px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/80"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label id="label-title" class="block text-xs text-white/65 mb-1.5"></label>
+                        <input id="new-test-title" type="text" required />
+                    </div>
+                    <div>
+                        <label id="label-category" class="block text-xs text-white/65 mb-1.5"></label>
+                        <select id="new-test-category"></select>
+                    </div>
+                </div>
+
+                <div>
+                    <label id="label-question" class="block text-xs text-white/65 mb-1.5"></label>
+                    <input id="new-test-question" type="text" required />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input id="opt-0" type="text" required />
+                    <input id="opt-1" type="text" required />
+                    <input id="opt-2" type="text" required />
+                    <input id="opt-3" type="text" required />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label id="label-correct" class="block text-xs text-white/65 mb-1.5"></label>
+                        <select id="new-test-correct"></select>
+                    </div>
+                    <div>
+                        <label id="label-explain" class="block text-xs text-white/65 mb-1.5"></label>
+                        <input id="new-test-explain" type="text" />
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end">
+                    <button id="save-test-btn" type="submit"></button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TAB 3: RESULTS -->
+        <section id="view-results" class="hidden space-y-5 anim-enter">
+            <div class="glass p-6 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="6" />
+                        <circle id="avg-ring" cx="32" cy="32" r="26" fill="none" stroke="#f5f6f8" stroke-width="6" stroke-linecap="round" stroke-dasharray="163.36" stroke-dashoffset="163.36" />
+                    </svg>
+                    <div>
+                        <h2 id="results-heading" class="text-xl font-bold"></h2>
+                        <p id="avg-score-label" class="text-sm text-white/65"></p>
+                    </div>
+                </div>
+                <button id="clear-results-btn" onclick="clearResults()"></button>
+            </div>
+
+            <div id="results-list" class="space-y-3"></div>
+        </section>
+
+        <!-- TAB 4: PUBLIC CHAT -->
+        <section id="view-chat" class="hidden space-y-4 anim-enter">
+            <div class="glass p-5 sm:p-6 flex items-center justify-between gap-3">
+                <div><p class="text-xs uppercase tracking-widest text-white/50">KITOTEST COMMUNITY</p><h2 class="text-2xl font-bold mt-1">💬 Общий чат</h2><p class="text-sm text-white/60 mt-1">Общайтесь анонимно. Каждому пользователю присваивается свой ID.</p><div class="anon-id-chip mt-3">🕶️ Ваш ID: <strong id="my-anon-id">Подготовка ID...</strong></div></div>
+                <div class="chat-online"><span class="online-dot"></span><span id="chat-status">Подключение...</span></div>
+            </div>
+            <div class="glass chat-shell">
+                <div id="chat-messages" class="chat-messages"><div class="chat-empty">Чат жүктелуде...</div></div>
+                <form id="chat-form" class="chat-compose"><input id="chat-input" maxlength="1000" autocomplete="off" placeholder="Напишите сообщение..."/><button type="submit" aria-label="Отправить">➤</button></form>
+                <p class="text-xs text-white/40 px-4 pb-3">🛡️ Ваше имя и email не отображаются. ID присваивается только этому браузеру. Сообщения сохраняются в общем чате.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with Author Copyright Logo -->
+    <footer class="max-w-5xl w-full mx-auto pt-2 anim-enter">
+        <div class="glass px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/75">
+            <div class="flex items-center gap-2.5">
+                <svg class="w-6 h-6 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="kitotest.kz copyright logo">
+                    <path d="M12 2.5L4.5 5.8v5.7c0 5 3.2 9.4 7.5 10.8 4.3-1.4 7.5-5.8 7.5-10.8V5.8L12 2.5z" />
+                    <circle cx="12" cy="11.5" r="2.5" />
+                </svg>
+                <span class="font-semibold text-white">kitotest.kz</span>
+                <span class="text-white/40">•</span>
+                <span id="footer-copyright"></span>
+            </div>
+            <span class="text-white/55">© 2026 kitotest.kz</span>
+        </div>
+    </footer>
+
+<!-- REAL ACCOUNT MODAL -->
+    <div id="account-modal" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4">
+      <div class="glass account-card anim-modal w-full max-w-md p-6 space-y-4">
+        <div class="flex items-center justify-between"><div><p class="text-xs tracking-widest text-white/50">KITOTEST ID</p><h2 id="account-title" class="text-2xl font-bold">Аккаунт</h2></div><button type="button" onclick="closeAccountModal()" class="!px-3 !py-2">✕</button></div>
+        <div id="account-profile" class="hidden space-y-3"><div class="profile-avatar" id="profile-avatar">K</div><div class="text-center"><h3 id="profile-name" class="text-xl font-bold"></h3><p id="profile-email" class="text-sm text-white/55"></p><p id="profile-created" class="text-xs text-white/40 mt-1"></p></div><button class="w-full" onclick="logoutReal()">Выйти из аккаунта</button></div>
+        <div id="account-forms" class="space-y-3">
+          <p class="text-sm text-white/60 text-center">Выберите способ входа</p>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" onclick="selectLoginProvider('google')" class="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-3 hover:bg-white/10 transition"><img src="go.jpg" alt="Google" class="w-7 h-7 object-contain rounded-md"/><span class="text-sm">Google</span></button>
+            <button type="button" onclick="selectLoginProvider('icloud')" class="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-3 hover:bg-white/10 transition"><svg viewBox="0 0 448 512" role="img" aria-label="Apple" class="w-7 h-7 fill-white"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.8-44.6-35.6-2.8-74.5 20.8-88.7 20.8-14.9 0-49.4-19.8-76.5-19.8C62.4 141.2 0 184.8 0 273.2c0 26.1 4.8 53.1 14.4 80.9 12.8 36.7 59 126.6 107.2 125.1 25.2-.6 43-17.9 75.9-17.9 31.9 0 48.4 17.9 76.5 17.9 48.6-.7 90.4-82.4 102.6-119.2-65.2-30.7-57.9-89.4-57.9-91.3zM262.5 104.1c27.4-32.5 24.9-62.2 24.1-72.8-24.2 1.4-52.2 16.5-68.1 34.5-17.5 19.3-27.8 43.1-25.6 69.9 26.2 2 50.1-11.5 69.6-31.6z"/></svg><span class="text-sm">Apple</span></button>
+          </div>
+          <div id="provider-panel" class="hidden rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3 text-center">
+            <div class="flex justify-center"><img id="provider-logo" src="go.jpg" alt="Google" class="w-12 h-12 object-contain rounded-xl"/><svg id="provider-apple-logo" viewBox="0 0 448 512" role="img" aria-label="Apple" class="hidden w-12 h-12 fill-white"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.8-44.6-35.6-2.8-74.5 20.8-88.7 20.8-14.9 0-49.4-19.8-76.5-19.8C62.4 141.2 0 184.8 0 273.2c0 26.1 4.8 53.1 14.4 80.9 12.8 36.7 59 126.6 107.2 125.1 25.2-.6 43-17.9 75.9-17.9 31.9 0 48.4 17.9 76.5 17.9 48.6-.7 90.4-82.4 102.6-119.2-65.2-30.7-57.9-89.4-57.9-91.3zM262.5 104.1c27.4-32.5 24.9-62.2 24.1-72.8-24.2 1.4-52.2 16.5-68.1 34.5-17.5 19.3-27.8 43.1-25.6 69.9 26.2 2 50.1-11.5 69.6-31.6z"/></svg></div>
+            <h3 id="provider-heading" class="font-semibold">Apple арқылы жалғастыру</h3>
+            <div id="provider-name-wrap" class="hidden space-y-1 text-left"><label class="text-xs text-white/60" for="provider-name">Ваше имя</label><input id="provider-name" maxlength="60" autocomplete="name" placeholder="Введите имя" class="w-full"/></div>
+            <div class="space-y-2 text-left">
+              <label id="provider-email-label" class="text-xs text-white/60" for="provider-email">Адрес Gmail</label>
+              <input id="provider-email" type="email" maxlength="120" autocomplete="email" placeholder="ваш-адрес@gmail.com" class="w-full"/>
+              <label class="text-xs text-white/60" for="provider-password">Пароль KITOTEST</label>
+              <input id="provider-password" type="password" maxlength="72" autocomplete="current-password" placeholder="Пароль KITOTEST" class="w-full"/>
+            </div>
+            <button id="provider-action" type="button" class="w-full active-pill" onclick="submitProviderAccount()">Войти</button>
+            <button id="provider-mode-toggle" type="button" class="w-full text-sm" onclick="toggleProviderMode()">Аккаунт жоқ па? Құру</button>
+            <p id="provider-message" class="text-xs text-amber-200/80" role="status"></p>
+            <button type="button" class="text-xs text-white/45 underline" onclick="hideProviderPanel()">Назад</button>
+          </div>
+<form id="account-form" class="hidden"><input id="account-name" value=""/><input id="account-email" type="email"/><input id="account-password" type="password"/><button id="account-submit" type="submit">Войти</button></form>
+          <p id="account-error" class="text-sm text-rose-200 text-center" role="alert"></p>
+          <p class="text-[11px] text-white/40 text-center">Gmail немесе iCloud поштаңызды логин ретінде қолданыңыз. Бұл жерде Apple ID/Google құпиясөзі емес, KITOTEST құпиясөзі енгізіледі.</p>
+        </div>
+
+        <div class="border-t border-white/10 pt-3 space-y-3"><button type="button" class="w-full" onclick="toggleAdminLogin()">🔐 Войти как администратор</button><div id="admin-login-area" class="hidden space-y-2"><label class="text-xs text-white/60">Админнің 32 таңбалы құпиясөзі</label><input id="admin-code-input" type="password" maxlength="32" autocomplete="current-password" placeholder="32 таңбалы админ құпиясөзі"/><button type="button" class="w-full active-pill" onclick="submitAdminLogin()">Войти в админ-панель</button><p id="admin-login-error" class="text-sm text-rose-200 text-center"></p></div></div>
+        <div id="admin-students-panel" class="hidden border-t border-white/10 pt-3 space-y-3"><div class="flex items-center justify-between"><h3 class="font-bold">Зарегистрированные ученики</h3><button type="button" onclick="loadAdminStudents()">Обновить</button></div><div id="admin-students-list" class="space-y-2 text-sm"></div><p class="text-[11px] text-white/40">Оқушының ескі құпиясөзі көрсетілмейді. Админ жаңасын орната алады.</p></div>
+      </div>
+    </div>
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" class="welcome-screen"><div class="welcome-orb"></div><div class="welcome-content anim-enter"><div class="welcome-logo">K</div><p class="text-xs tracking-[.35em] text-white/50 mt-6">ДОБРО ПОЖАЛОВАТЬ В</p><h1 class="text-4xl sm:text-6xl font-bold mt-3">kitotest<span class="text-white/45">.kz</span></h1><p class="text-white/65 mt-4 max-w-md mx-auto">Проверяй знания. Сохраняй результаты. Развивайся вместе с сообществом.</p><button class="welcome-button mt-8" onclick="enterWelcome()">Начать <span>→</span></button><p class="text-xs text-white/35 mt-8">Liquid Glass experience</p></div></div>
+
+
+    <script>
+        const I18N = {
+            kk: {
+                navTests: 'Тесттер',
+                navCreate: 'Тест жасау',
+                navResults: 'Нәтижелер',
+                loginBtn: 'Войти',
+                adminLabel: 'Админ',
+                allCat: 'Барлығы',
+                catHistory: 'Тарих',
+                catMath: 'Математика',
+                catIT: 'IT',
+                catEnglish: 'Ағылшын',
+                questionsCount: 'сұрақ',
+                startBtn: 'Начать',
+                deleteBtn: 'Өшіру',
+                closeBtn: 'Жабу',
+                shuffleBtn: 'Араластыру',
+                nextBtn: 'Келесі',
+                finishBtn: 'Аяқтау',
+                scoreLabel: 'Ұпай',
+                correctLabel: 'Дұрыс',
+                wrongLabel: 'Қате',
+                adminLockTitle: 'Админдық кіру қажет',
+                adminLockDesc: 'Тест жасау тек админге ашық.',
+                adminLoginAction: 'Админдық кіру',
+                createTitle: 'Тест жасау',
+                labelTitle: 'Атауы',
+                placeholderTitle: 'Тест атауы',
+                labelCategory: 'Санат',
+                labelQuestion: 'Сұрақ',
+                placeholderQuestion: 'Сұрақ мәтіні',
+                optionPlaceholder: (n) => `Нұсқа ${n}`,
+                labelCorrect: 'Дұрыс жауап',
+                labelExplain: 'Түсіндірме',
+                placeholderExplain: 'Қысқа түсіндірме',
+                defaultExplain: 'Дұрыс жауап белгіленді.',
+                saveBtn: 'Сақтау',
+                resultsTitle: 'Нәтижелер',
+                avgLabel: (pct) => `Орташа нәтиже: ${pct}%`,
+                clearBtn: 'Тазалау',
+                noResults: 'Әзірге нәтиже жоқ',
+                copyright: 'Защищено авторским правом',
+                logoutBtn: 'Шығу',
+                userRole: 'Қолданушы',
+                adminPlaceholder: 'Код администратора',
+                loggedInAs: (name) => `Кірген: ${name}`,
+                signedInAsAdmin: 'Админ ретінде кірген',
+                toastSignInRequired: 'Тест тапсыру үшін аккаунтқа кіріңіз',
+                toastShuffled: 'Сұрақтар араластырылды',
+                toastSignedIn: (p) => `${p} арқылы кірдіңіз`,
+                toastWrongCode: 'Код администратора қате',
+                toastAdminGranted: 'Админ рұқсаты ашылды',
+                toastLoggedOut: 'Шықтыңыз',
+                toastSaved: 'Тест сақталды',
+                toastCleared: 'Тазаланды',
+                toastResult: (pct) => `Нәтиже: ${pct}%`,
+                tests: [
+                    {
+                        id: 't-hist-1',
+                        title: 'Қазақстан тарихы',
+                        categoryKey: 'history',
+                        questions: [
+                            {
+                                q: 'Алтын Орда қай жылы құрылды?',
+                                options: ['1227 ж.', '1240 ж.', '1465 ж.', '1718 ж.'],
+                                correct: 0,
+                                explain: '1227 жылы Жошы хан қайтыс болғаннан кейін Алтын Орда құрылды.'
+                            },
+                            {
+                                q: 'Қазақ хандығының негізін қалаған хандар?',
+                                options: ['Керей мен Жәнібек', 'Тәуке мен Әбілқайыр', 'Абылай мен Кенесары', 'Қасым мен Есім'],
+                                correct: 0,
+                                explain: '1465 жылы Керей мен Жәнібек сұлтандар Қазақ хандығының іргесін қалады.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-math-1',
+                        title: 'Математика және логика',
+                        categoryKey: 'math',
+                        questions: [
+                            {
+                                q: '15 × 12 неге тең?',
+                                options: ['160', '180', '195', '210'],
+                                correct: 1,
+                                explain: '15 × 10 = 150, 15 × 2 = 30; 150 + 30 = 180.'
+                            },
+                            {
+                                q: 'Тізбекті жалғастырыңыз: 2, 6, 12, 20, ?',
+                                options: ['28', '30', '32', '36'],
+                                correct: 1,
+                                explain: 'Айырмасы +4, +6, +8, +10 болып өседі: 20 + 10 = 30.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-it-1',
+                        title: 'IT және бағдарламалау',
+                        categoryKey: 'it',
+                        questions: [
+                            {
+                                q: 'Веб-беттің құрылымын қандай тіл сипаттайды?',
+                                options: ['HTML', 'SQL', 'Bash', 'C++'],
+                                correct: 0,
+                                explain: 'HTML — веб-құжаттардың құрылымын белгілейтін тіл.'
+                            },
+                            {
+                                q: 'HTTP 200 күй коды нені білдіреді?',
+                                options: ['Табылмады', 'Сәтті орындалды', 'Қате сұраныс', 'Рұқсат жоқ'],
+                                correct: 1,
+                                explain: '200 OK сұраныстың сәтті өткенін білдіреді.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-eng-1',
+                        title: 'English Basics',
+                        categoryKey: 'english',
+                        questions: [
+                            {
+                                q: 'Choose the correct word: "She ___ every morning."',
+                                options: ['run', 'runs', 'running', 'ran'],
+                                correct: 1,
+                                explain: 'Present Simple: he/she/it үшін етістікке -s жалғанады.'
+                            },
+                            {
+                                q: 'Synonym of "fast":',
+                                options: ['Slow', 'Quick', 'Weak', 'Late'],
+                                correct: 1,
+                                explain: '"Quick" сөзі "fast" сөзінің синонимі.'
+                            }
+                        ]
+                    }
+                ]
+            },
+            ru: {
+                navTests: 'Тесты',
+                navCreate: 'Создать тест',
+                navResults: 'Результаты',
+                loginBtn: 'Войти',
+                adminLabel: 'Админ',
+                allCat: 'Все',
+                catHistory: 'История',
+                catMath: 'Математика',
+                catIT: 'IT',
+                catEnglish: 'Английский',
+                questionsCount: 'вопросов',
+                startBtn: 'Начать',
+                deleteBtn: 'Удалить',
+                closeBtn: 'Закрыть',
+                shuffleBtn: 'Перемешать',
+                nextBtn: 'Далее',
+                finishBtn: 'Завершить',
+                scoreLabel: 'Баллы',
+                correctLabel: 'Верно',
+                wrongLabel: 'Неверно',
+                adminLockTitle: 'Требуется вход админа',
+                adminLockDesc: 'Создание тестов доступно только админу.',
+                adminLoginAction: 'Вход админа',
+                createTitle: 'Создать тест',
+                labelTitle: 'Название',
+                placeholderTitle: 'Название теста',
+                labelCategory: 'Категория',
+                labelQuestion: 'Вопрос',
+                placeholderQuestion: 'Текст вопроса',
+                optionPlaceholder: (n) => `Вариант ${n}`,
+                labelCorrect: 'Правильный ответ',
+                labelExplain: 'Пояснение',
+                placeholderExplain: 'Краткое пояснение',
+                defaultExplain: 'Правильный ответ отмечен.',
+                saveBtn: 'Сохранить',
+                resultsTitle: 'Результаты',
+                avgLabel: (pct) => `Средний результат: ${pct}%`,
+                clearBtn: 'Очистить',
+                noResults: 'Результатов пока нет',
+                copyright: 'Защищено авторским правом',
+                logoutBtn: 'Выйти',
+                userRole: 'Пользователь',
+                adminPlaceholder: 'Код админа',
+                loggedInAs: (name) => `Вход выполнен: ${name}`,
+                signedInAsAdmin: 'Вход выполнен как Админ',
+                toastSignInRequired: 'Войдите в аккаунт, чтобы пройти тест',
+                toastShuffled: 'Вопросы перемешаны',
+                toastSignedIn: (p) => `Вы вошли через ${p}`,
+                toastWrongCode: 'Неверный код администратора',
+                toastAdminGranted: 'Доступ админа открыт',
+                toastLoggedOut: 'Вы вышли',
+                toastSaved: 'Тест сохранён',
+                toastCleared: 'Очищено',
+                toastResult: (pct) => `Результат: ${pct}%`,
+                tests: [
+                    {
+                        id: 't-hist-1',
+                        title: 'История Казахстана',
+                        categoryKey: 'history',
+                        questions: [
+                            {
+                                q: 'В каком году образовалась Золотая Орда?',
+                                options: ['1227 г.', '1240 г.', '1465 г.', '1718 г.'],
+                                correct: 0,
+                                explain: 'Золотая Орда образовалась после смерти хана Джучи в 1227 году.'
+                            },
+                            {
+                                q: 'Ханы, основавшие Казахское ханство?',
+                                options: ['Керей и Жанибек', 'Тауке и Абулхаир', 'Абылай и Кенесары', 'Касым и Есим'],
+                                correct: 0,
+                                explain: 'В 1465 году султаны Керей и Жанибек основали Казахское ханство.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-math-1',
+                        title: 'Математика и логика',
+                        categoryKey: 'math',
+                        questions: [
+                            {
+                                q: 'Чему равно 15 × 12?',
+                                options: ['160', '180', '195', '210'],
+                                correct: 1,
+                                explain: '15 × 10 = 150, 15 × 2 = 30; 150 + 30 = 180.'
+                            },
+                            {
+                                q: 'Продолжите ряд: 2, 6, 12, 20, ?',
+                                options: ['28', '30', '32', '36'],
+                                correct: 1,
+                                explain: 'Разница увеличивается на +4, +6, +8, +10: 20 + 10 = 30.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-it-1',
+                        title: 'IT и программирование',
+                        categoryKey: 'it',
+                        questions: [
+                            {
+                                q: 'Какой язык описывает структуру веб-страницы?',
+                                options: ['HTML', 'SQL', 'Bash', 'C++'],
+                                correct: 0,
+                                explain: 'HTML — язык разметки структуры веб-документов.'
+                            },
+                            {
+                                q: 'Что означает код состояния HTTP 200?',
+                                options: ['Не найдено', 'Успешно', 'Ошибка запроса', 'Нет доступа'],
+                                correct: 1,
+                                explain: '200 OK означает успешное выполнение запроса.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-eng-1',
+                        title: 'English Basics',
+                        categoryKey: 'english',
+                        questions: [
+                            {
+                                q: 'Choose the correct word: "She ___ every morning."',
+                                options: ['run', 'runs', 'running', 'ran'],
+                                correct: 1,
+                                explain: 'В Present Simple для he/she/it к глаголу добавляется -s.'
+                            },
+                            {
+                                q: 'Synonym of "fast":',
+                                options: ['Slow', 'Quick', 'Weak', 'Late'],
+                                correct: 1,
+                                explain: '"Quick" является синонимом слова "fast".'
+                            }
+                        ]
+                    }
+                ]
+            },
+            en: {
+                navTests: 'Tests',
+                navCreate: 'Create Test',
+                navResults: 'Results',
+                loginBtn: 'Sign In',
+                adminLabel: 'Admin',
+                allCat: 'All',
+                catHistory: 'History',
+                catMath: 'Math',
+                catIT: 'IT',
+                catEnglish: 'English',
+                questionsCount: 'questions',
+                startBtn: 'Start',
+                deleteBtn: 'Delete',
+                closeBtn: 'Close',
+                shuffleBtn: 'Shuffle',
+                nextBtn: 'Next',
+                finishBtn: 'Finish',
+                scoreLabel: 'Score',
+                correctLabel: 'Correct',
+                wrongLabel: 'Incorrect',
+                adminLockTitle: 'Admin sign-in required',
+                adminLockDesc: 'Creating tests is restricted to Admin only.',
+                adminLoginAction: 'Admin Login',
+                createTitle: 'Create Test',
+                labelTitle: 'Title',
+                placeholderTitle: 'Test title',
+                labelCategory: 'Category',
+                labelQuestion: 'Question',
+                placeholderQuestion: 'Question text',
+                optionPlaceholder: (n) => `Option ${n}`,
+                labelCorrect: 'Correct answer',
+                labelExplain: 'Explanation',
+                placeholderExplain: 'Short explanation',
+                defaultExplain: 'Correct answer highlighted.',
+                saveBtn: 'Save',
+                resultsTitle: 'Results',
+                avgLabel: (pct) => `Average score: ${pct}%`,
+                clearBtn: 'Clear',
+                noResults: 'No results yet',
+                copyright: 'All rights reserved',
+                logoutBtn: 'Sign Out',
+                userRole: 'User',
+                adminPlaceholder: 'Admin code',
+                loggedInAs: (name) => `Signed in: ${name}`,
+                signedInAsAdmin: 'Signed in as Admin',
+                toastSignInRequired: 'Please sign in to take a test',
+                toastShuffled: 'Questions shuffled',
+                toastSignedIn: (p) => `Signed in with ${p}`,
+                toastWrongCode: 'Invalid administrator code',
+                toastAdminGranted: 'Admin access enabled',
+                toastLoggedOut: 'Signed out',
+                toastSaved: 'Test saved',
+                toastCleared: 'Cleared',
+                toastResult: (pct) => `Score: ${pct}%`,
+                tests: [
+                    {
+                        id: 't-hist-1',
+                        title: 'History of Kazakhstan',
+                        categoryKey: 'history',
+                        questions: [
+                            {
+                                q: 'In which year was the Golden Horde founded?',
+                                options: ['1227', '1240', '1465', '1718'],
+                                correct: 0,
+                                explain: 'The Golden Horde was established in 1227 after Jochi Khan.'
+                            },
+                            {
+                                q: 'Which khans founded the Kazakh Khanate?',
+                                options: ['Kerey and Zhanibek', 'Tauke and Abulkhair', 'Ablai and Kenesary', 'Kasym and Esim'],
+                                correct: 0,
+                                explain: 'Sultans Kerey and Zhanibek founded the Kazakh Khanate in 1465.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-math-1',
+                        title: 'Math and Logic',
+                        categoryKey: 'math',
+                        questions: [
+                            {
+                                q: 'What is 15 × 12?',
+                                options: ['160', '180', '195', '210'],
+                                correct: 1,
+                                explain: '15 × 10 = 150 and 15 × 2 = 30; 150 + 30 = 180.'
+                            },
+                            {
+                                q: 'Continue the sequence: 2, 6, 12, 20, ?',
+                                options: ['28', '30', '32', '36'],
+                                correct: 1,
+                                explain: 'Differences grow by +4, +6, +8, +10: 20 + 10 = 30.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-it-1',
+                        title: 'IT and Programming',
+                        categoryKey: 'it',
+                        questions: [
+                            {
+                                q: 'Which language defines web page structure?',
+                                options: ['HTML', 'SQL', 'Bash', 'C++'],
+                                correct: 0,
+                                explain: 'HTML defines the structure of web documents.'
+                            },
+                            {
+                                q: 'What does HTTP status code 200 mean?',
+                                options: ['Not Found', 'OK / Success', 'Bad Request', 'Forbidden'],
+                                correct: 1,
+                                explain: '200 OK indicates a successful request.'
+                            }
+                        ]
+                    },
+                    {
+                        id: 't-eng-1',
+                        title: 'English Basics',
+                        categoryKey: 'english',
+                        questions: [
+                            {
+                                q: 'Choose the correct word: "She ___ every morning."',
+                                options: ['run', 'runs', 'running', 'ran'],
+                                correct: 1,
+                                explain: 'Present Simple adds -s to the verb for he/she/it.'
+                            },
+                            {
+                                q: 'Synonym of "fast":',
+                                options: ['Slow', 'Quick', 'Weak', 'Late'],
+                                correct: 1,
+                                explain: '"Quick" is a synonym of "fast".'
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const CATEGORY_KEYS = ['all', 'history', 'math', 'it', 'english'];
+
+        function getCategoryLabel(catKey, lang = state.lang) {
+            const d = I18N[lang];
+            const map = {
+                all: d.allCat,
+                history: d.catHistory,
+                math: d.catMath,
+                it: d.catIT,
+                english: d.catEnglish
+            };
+            return map[catKey] || catKey;
+        }
+
+        let pendingSubjectKey = '';
+        const state = {
+            lang: 'ru',
+            tab: 'tests',
+            categoryKey: 'all',
+            customTests: [],
+            results: [],
+            user: null, // { name, provider, isAdmin }
+            runner: {
+                testId: null,
+                questions: [],
+                index: 0,
+                score: 0,
+                answered: false
+            }
+        };
+
+        function getAllTests() {
+            const base = I18N[state.lang].tests.map((t) => ({
+                ...t,
+                category: getCategoryLabel(t.categoryKey)
+            }));
+            const custom = state.customTests.map((t) => ({
+                ...t,
+                category: getCategoryLabel(t.categoryKey)
+            }));
+            return [...custom, ...base];
+        }
+
+        function setLanguage(lang) {
+            lang = 'ru'; if (!I18N[lang]) return;
+            state.lang = lang;
+            document.documentElement.lang = lang === 'kk' ? 'kk' : lang === 'ru' ? 'ru' : 'en';
+
+            ['kk', 'ru', 'en'].forEach((code) => {
+                const button = document.getElementById(`lang-${code}`); if (button) button.classList.toggle('active-pill', code === lang);
+            });
+
+            applyTranslations();
+            renderCategories();
+            renderTests();
+            renderCreateView();
+            renderResults();
+
+            if (state.runner.testId && !document.getElementById('runner-panel').classList.contains('hidden')) {
+                const updatedTest = getAllTests().find((t) => t.id === state.runner.testId);
+                if (updatedTest) {
+                    document.getElementById('runner-category').textContent = updatedTest.category;
+                    document.getElementById('runner-title').textContent = updatedTest.title;
+                }
+            }
+        }
+
+        function applyTranslations() {
+            const d = I18N[state.lang];
+            document.getElementById('nav-tests').textContent = d.navTests;
+            document.getElementById('nav-create').textContent = d.navCreate;
+            document.getElementById('nav-results').textContent = d.navResults;
+            document.getElementById('tests-heading').textContent = d.navTests;
+
+            document.getElementById('runner-close-btn').textContent = d.closeBtn;
+            document.getElementById('runner-shuffle-btn').textContent = d.shuffleBtn;
+
+            document.getElementById('admin-lock-title').textContent = d.adminLockTitle;
+            document.getElementById('admin-lock-desc').textContent = d.adminLockDesc;
+            document.getElementById('admin-lock-btn').textContent = d.adminLoginAction;
+
+            document.getElementById('create-form-title').textContent = d.createTitle;
+            document.getElementById('create-admin-badge').textContent = d.adminLabel;
+            document.getElementById('label-title').textContent = d.labelTitle;
+            document.getElementById('new-test-title').placeholder = d.placeholderTitle;
+            document.getElementById('label-category').textContent = d.labelCategory;
+            document.getElementById('label-question').textContent = d.labelQuestion;
+            document.getElementById('new-test-question').placeholder = d.placeholderQuestion;
+
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`opt-${i}`).placeholder = d.optionPlaceholder(i + 1);
+            }
+
+            const catSelect = document.getElementById('new-test-category');
+            const prevCat = catSelect.value || 'history';
+            catSelect.innerHTML = ['history', 'math', 'it', 'english']
+                .map((k) => `<option value="${k}">${getCategoryLabel(k)}</option>`)
+                .join('');
+            catSelect.value = prevCat;
+
+            const correctSelect = document.getElementById('new-test-correct');
+            const prevCorrect = correctSelect.value || '0';
+            correctSelect.innerHTML = [0, 1, 2, 3]
+                .map((i) => `<option value="${i}">${d.optionPlaceholder(i + 1)}</option>`)
+                .join('');
+            correctSelect.value = prevCorrect;
+
+            document.getElementById('label-correct').textContent = d.labelCorrect;
+            document.getElementById('label-explain').textContent = d.labelExplain;
+            document.getElementById('new-test-explain').placeholder = d.placeholderExplain;
+            document.getElementById('save-test-btn').textContent = d.saveBtn;
+
+            document.getElementById('results-heading').textContent = d.resultsTitle;
+            document.getElementById('clear-results-btn').textContent = d.clearBtn;
+            document.getElementById('footer-copyright').textContent = d.copyright;
+
+            document.getElementById('modal-title').textContent = d.loginBtn;
+            document.getElementById('modal-close-btn').textContent = d.closeBtn;
+            document.getElementById('logout-btn').textContent = d.logoutBtn;
+            document.querySelectorAll('#auth-modal .role-badge').forEach((el) => {
+                el.textContent = d.userRole;
+            });
+            document.getElementById('admin-login-heading').textContent = d.adminLoginAction;
+            document.getElementById('admin-pass-input').placeholder = d.adminPlaceholder;
+            document.getElementById('admin-login-btn').textContent = d.adminLoginAction;
+
+            updateHeaderAuth();
+            updateSessionUI();
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            clearTimeout(showToast._timer);
+            showToast._timer = setTimeout(() => el.classList.add('hidden'), 2400);
+        }
+
+        function switchTab(tabName) {
+            state.tab = tabName;
+            ['tests', 'create', 'results'].forEach((t) => {
+                const section = document.getElementById(`view-${t}`);
+                const isActive = t === tabName;
+                section.classList.toggle('hidden', !isActive);
+                if (isActive) {
+                    section.classList.remove('anim-enter');
+                    void section.offsetWidth;
+                    section.classList.add('anim-enter');
+                }
+                document.getElementById(`nav-${t}`).classList.toggle('active-pill', isActive);
+            });
+            if (tabName === 'create') renderCreateView();
+            if (tabName === 'results') renderResults();
+        }
+
+        function renderCategories() {
+            const wrap = document.getElementById('category-pills');
+            wrap.innerHTML = '';
+            CATEGORY_KEYS.forEach((catKey) => {
+                const btn = document.createElement('button');
+                btn.textContent = getCategoryLabel(catKey);
+                btn.className = state.categoryKey === catKey ? 'active-pill' : '';
+                btn.onclick = () => {
+                    state.categoryKey = catKey;
+                    renderCategories();
+                    renderTests();
+                };
+                wrap.appendChild(btn);
+            });
+        }
+
+        function openSubjectTest(subjectKey) {
+            pendingSubjectKey = subjectKey;
+            if (!hasRequiredAuth() || !localStorage.getItem('kitotest_token')) {
+                showToast('Алдымен аккаунт құрыңыз немесе аккаунтқа кіріңіз.');
+                openAccountModal();
+                const msg = document.getElementById('provider-message');
+                if (msg) msg.textContent = 'Аккаунтқа кіргеннен кейін күрделі сұрақтар ашылады.';
+                return;
+            }
+            continueSubjectTest();
+        }
+
+        function continueSubjectTest() {
+            if (!pendingSubjectKey) return;
+            const subjectKey = pendingSubjectKey;
+            pendingSubjectKey = '';
+            const available = ['history', 'math', 'it', 'english'];
+            if (!available.includes(subjectKey)) {
+                showToast('Бұл пәннің күрделі сұрақтары әзірленіп жатыр.');
+                return;
+            }
+            state.categoryKey = subjectKey;
+            renderCategories();
+            renderTests();
+            document.getElementById('tests-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast('Аккаунт дайын! Пән бойынша тестті таңдаңыз.');
+        }
+
+        function renderTests() {
+            const d = I18N[state.lang];
+            const grid = document.getElementById('tests-grid');
+            const all = getAllTests();
+            const filtered = state.categoryKey === 'all'
+                ? all
+                : all.filter((t) => t.categoryKey === state.categoryKey);
+
+            grid.innerHTML = filtered.map((test) => {
+                const isCustom = state.customTests.some((ct) => ct.id === test.id);
+                return `
+                    <div class="card anim-enter p-5 flex flex-col justify-between gap-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <span class="text-xs px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/75">${escapeHtml(test.category)}</span>
+                                <h3 class="text-lg font-bold mt-2.5">${escapeHtml(test.title)}</h3>
+                                <p class="text-xs text-white/60 mt-1">${test.questions.length} ${d.questionsCount}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 pt-1">
+                            <button onclick="startTest('${test.id}')">${d.startBtn}</button>
+                            ${state.user && state.user.isAdmin && isCustom ? `<button onclick="deleteTest('${test.id}')" class="!px-3.5 !py-2 text-xs">${d.deleteBtn}</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteTest(id) {
+            if (!state.user || !state.user.isAdmin) return;
+            state.customTests = state.customTests.filter((t) => t.id !== id);
+            renderTests();
+            showToast(I18N[state.lang].toastCleared);
+        }
+
+        function hasRequiredAuth() {
+            return Boolean(state.user && (state.user.provider || state.user.isAdmin));
+        }
+
+        function shuffleArray(arr) {
+            const copy = arr.slice();
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function startTest(id) {
+            const d = I18N[state.lang];
+            if (!hasRequiredAuth() || !localStorage.getItem('kitotest_token')) {
+                showToast('Тестті бастау үшін аккаунтқа кіріңіз.');
+                window.openAccountModal();
+                return;
+            }
+            const test = getAllTests().find((t) => t.id === id);
+            if (!test) return;
+            state.runner.testId = test.id;
+            state.runner.questions = shuffleArray(test.questions);
+            state.runner.index = 0;
+            state.runner.score = 0;
+            state.runner.answered = false;
+
+            const panel = document.getElementById('runner-panel');
+            document.getElementById('runner-category').textContent = test.category;
+            document.getElementById('runner-title').textContent = test.title;
+            panel.classList.remove('hidden');
+            panel.classList.remove('anim-modal');
+            void panel.offsetWidth;
+            panel.classList.add('anim-modal');
+
+            renderQuestion();
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function shuffleCurrentTest() {
+            const d = I18N[state.lang];
+            if (!hasRequiredAuth() || !localStorage.getItem('kitotest_token')) {
+                closeRunner();
+                showToast('Тестті аяқтау үшін аккаунтқа кіріңіз.');
+                window.openAccountModal();
+                return;
+            }
+            if (!state.runner.testId) return;
+            startTest(state.runner.testId);
+            showToast(d.toastShuffled);
+        }
+
+        function closeRunner() {
+            document.getElementById('runner-panel').classList.add('hidden');
+            state.runner.testId = null;
+        }
+
+        function renderQuestion() {
+            const d = I18N[state.lang];
+            const { questions, index, score } = state.runner;
+            const total = questions.length;
+            const qObj = questions[index];
+            state.runner.answered = false;
+
+            document.getElementById('runner-progress').textContent = `${index + 1} / ${total}`;
+            document.getElementById('runner-score').textContent = `${d.scoreLabel}: ${score}`;
+            document.getElementById('runner-question').textContent = qObj.q;
+
+            const fb = document.getElementById('runner-feedback');
+            fb.classList.add('hidden');
+            fb.innerHTML = '';
+
+            const optsWrap = document.getElementById('runner-options');
+            optsWrap.innerHTML = '';
+            qObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full !justify-start text-left !rounded-2xl';
+                btn.textContent = opt;
+                btn.onclick = () => selectAnswer(idx, btn);
+                optsWrap.appendChild(btn);
+            });
+
+            document.getElementById('runner-next-btn').textContent = index + 1 === total ? d.finishBtn : d.nextBtn;
+        }
+
+        function selectAnswer(idx, clickedBtn) {
+            const d = I18N[state.lang];
+            if (!hasRequiredAuth()) {
+                closeRunner();
+                showToast(d.toastSignInRequired);
+                openAuthModal('account');
+                return;
+            }
+            if (state.runner.answered) return;
+            state.runner.answered = true;
+
+            const qObj = state.runner.questions[state.runner.index];
+            const isCorrect = idx === qObj.correct;
+            if (isCorrect) {
+                state.runner.score += 1;
+                document.getElementById('runner-score').textContent = `${d.scoreLabel}: ${state.runner.score}`;
+            }
+
+            const buttons = document.querySelectorAll('#runner-options button');
+            buttons.forEach((b, i) => {
+                b.disabled = true;
+                if (i === qObj.correct) {
+                    b.style.borderColor = 'rgba(134, 239, 172, 0.8)';
+                    b.style.background = 'rgba(34, 197, 94, 0.22)';
+                } else if (b === clickedBtn && !isCorrect) {
+                    b.style.borderColor = 'rgba(252, 165, 165, 0.8)';
+                    b.style.background = 'rgba(239, 68, 68, 0.22)';
+                }
+            });
+
+            const fb = document.getElementById('runner-feedback');
+            fb.classList.remove('hidden');
+            fb.classList.remove('anim-enter');
+            void fb.offsetWidth;
+            fb.classList.add('anim-enter');
+            fb.innerHTML = `
+                <div class="font-semibold">${isCorrect ? d.correctLabel : d.wrongLabel}</div>
+                <div class="text-white/75">${escapeHtml(qObj.explain || '')}</div>
+            `;
+        }
+
+        function nextQuestion() {
+            const d = I18N[state.lang];
+            if (!hasRequiredAuth()) {
+                closeRunner();
+                showToast(d.toastSignInRequired);
+                openAuthModal('account');
+                return;
+            }
+            if (!state.runner.testId) return;
+            const test = getAllTests().find((t) => t.id === state.runner.testId);
+            const { index, questions, score } = state.runner;
+            if (index + 1 < questions.length) {
+                state.runner.index += 1;
+                renderQuestion();
+            } else {
+                const pct = Math.round((score / questions.length) * 100);
+                state.results.unshift({
+                    id: Date.now(),
+                    title: test ? test.title : 'Test',
+                    categoryKey: test ? test.categoryKey : 'all',
+                    score,
+                    total: questions.length,
+                    pct,
+                    user: state.user ? state.user.name : d.userRole,
+                    date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+                closeRunner();
+                switchTab('results');
+                showToast(d.toastResult(pct));
+            }
+        }
+
+        /* AUTH MODAL & ADMIN ACCESS */
+        function openAuthModal(focusMode) {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('hidden');
+            const box = modal.querySelector('.anim-modal');
+            if (box) {
+                box.classList.remove('anim-modal');
+                void box.offsetWidth;
+                box.classList.add('anim-modal');
+            }
+            updateSessionUI();
+            if (focusMode === 'admin') {
+                document.getElementById('admin-pass-input').focus();
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function loginProvider(provider) {
+            state.user = {
+                name: provider,
+                provider,
+                isAdmin: false
+            };
+            updateHeaderAuth();
+            updateSessionUI();
+            renderTests();
+            renderCreateView();
+            closeAuthModal();
+            showToast(I18N[state.lang].toastSignedIn(provider));
+        }
+
+        function logoutUser() {
+            state.user = null;
+            closeRunner();
+            updateHeaderAuth();
+            updateSessionUI();
+            renderTests();
+            renderCreateView();
+            showToast(I18N[state.lang].toastLoggedOut);
+        }
+
+        function updateHeaderAuth() {
+            const d = I18N[state.lang];
+            const btn = document.getElementById('auth-header-btn');
+            if (!state.user) {
+                btn.textContent = d.loginBtn;
+            } else if (state.user.isAdmin) {
+                btn.textContent = d.adminLabel;
+            } else {
+                btn.textContent = state.user.name;
+            }
+        }
+
+        function updateSessionUI() {
+            const d = I18N[state.lang];
+            const box = document.getElementById('current-session-box');
+            const label = document.getElementById('session-label');
+            if (state.user) {
+                box.classList.remove('hidden');
+                label.textContent = state.user.isAdmin ? d.signedInAsAdmin : d.loggedInAs(state.user.name);
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        function renderCreateView() {
+            const isAdmin = Boolean(state.user && state.user.isAdmin);
+            document.getElementById('admin-lock-card').classList.toggle('hidden', isAdmin);
+            document.getElementById('admin-create-form').classList.toggle('hidden', !isAdmin);
+        }
+
+        function handleCreateTest(e) {
+            e.preventDefault();
+            const d = I18N[state.lang];
+            if (!state.user || !state.user.isAdmin) {
+                showToast(d.adminLockTitle);
+                return;
+            }
+
+            const title = document.getElementById('new-test-title').value.trim();
+            const categoryKey = document.getElementById('new-test-category').value;
+            const q = document.getElementById('new-test-question').value.trim();
+            const options = [
+                document.getElementById('opt-0').value.trim(),
+                document.getElementById('opt-1').value.trim(),
+                document.getElementById('opt-2').value.trim(),
+                document.getElementById('opt-3').value.trim()
+            ];
+            const correct = parseInt(document.getElementById('new-test-correct').value, 10);
+            const explain = document.getElementById('new-test-explain').value.trim() || d.defaultExplain;
+
+            if (!title || !q || options.some((o) => !o)) return;
+
+            state.customTests.unshift({
+                id: 'custom-' + Date.now(),
+                title,
+                categoryKey,
+                questions: [{ q, options, correct, explain }]
+            });
+
+            e.target.reset();
+            renderTests();
+            switchTab('tests');
+            showToast(d.toastSaved);
+        }
+
+        /* RESULTS */
+        function renderResults() {
+            const d = I18N[state.lang];
+            const list = document.getElementById('results-list');
+            const ring = document.getElementById('avg-ring');
+            const label = document.getElementById('avg-score-label');
+            const circumference = 2 * Math.PI * 26;
+
+            if (!state.results.length) {
+                ring.style.strokeDashoffset = circumference;
+                label.textContent = d.avgLabel(0);
+                list.innerHTML = `<div class="glass p-6 text-center text-sm text-white/60">${d.noResults}</div>`;
+                return;
+            }
+
+            const avg = Math.round(state.results.reduce((acc, r) => acc + r.pct, 0) / state.results.length);
+            ring.style.strokeDashoffset = circumference - (avg / 100) * circumference;
+            label.textContent = d.avgLabel(avg);
+
+            list.innerHTML = state.results.map((r) => `
+                <div class="glass anim-enter px-5 py-4 flex items-center justify-between gap-3">
+                    <div>
+                        <div class="font-semibold">${escapeHtml(r.title)}</div>
+                        <div class="text-xs text-white/60">${escapeHtml(getCategoryLabel(r.categoryKey))} • ${escapeHtml(r.user)} • ${r.date}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold">${r.pct}%</div>
+                        <div class="text-xs text-white/60">${r.score}/${r.total}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearResults() {
+            state.results = [];
+            renderResults();
+            showToast(I18N[state.lang].toastCleared);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setLanguage('ru');
+        });
+    
+
+        /* LIQUID GLASS UI — one navigation dock only */
+        (() => {
+            const initLiquidUI = () => {
+                const startup = document.createElement('div');
+                startup.className = 'liquid-startup';
+                startup.innerHTML = '<div class="liquid-startup-orb" aria-hidden="true"></div><div class="liquid-startup-label">KITOTEST • LOADING</div>';
+                document.body.appendChild(startup);
+                const hideStartup = () => startup.classList.add('is-hidden');
+                window.addEventListener('load', () => setTimeout(hideStartup, 350), { once: true });
+                setTimeout(hideStartup, 1800);
+
+                document.addEventListener('click', (event) => {
+                    const target = event.target.closest('button');
+                    if (!target || target.disabled || target.closest('.liquid-dock')) return;
+                    const rect = target.getBoundingClientRect();
+                    const diameter = Math.max(rect.width, rect.height) * 1.25;
+                    const ripple = document.createElement('span');
+                    ripple.className = 'liquid-ripple';
+                    ripple.style.width = ripple.style.height = diameter + 'px';
+                    ripple.style.left = (event.clientX - rect.left - diameter / 2) + 'px';
+                    ripple.style.top = (event.clientY - rect.top - diameter / 2) + 'px';
+                    target.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 700);
+                });
+
+                if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                    const cursor = document.createElement('div');
+                    cursor.className = 'liquid-cursor';
+                    document.body.appendChild(cursor);
+                    document.addEventListener('pointermove', (event) => {
+                        const card = event.target.closest('.card');
+                        if (card) {
+                            const rect = card.getBoundingClientRect();
+                            const x = (event.clientX - rect.left) / rect.width - .5;
+                            const y = (event.clientY - rect.top) / rect.height - .5;
+                            card.style.transform = `perspective(850px) rotateX(${-y * 2}deg) rotateY(${x * 2}deg) translateY(-2px)`;
+                        }
+                        cursor.style.left = event.clientX + 'px';
+                        cursor.style.top = event.clientY + 'px';
+                        cursor.classList.add('is-visible');
+                        cursor.classList.toggle('is-hover', Boolean(event.target.closest('button, a')));
+                    });
+                    document.addEventListener('pointerout', (event) => {
+                        const card = event.target.closest('.card');
+                        if (card && !card.contains(event.relatedTarget)) card.style.transform = '';
+                    });
+                    document.addEventListener('pointerleave', () => cursor.classList.remove('is-visible'));
+                }
+            };
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLiquidUI, { once: true });
+            else initLiquidUI();
+        })();
+
+    </script>
+
+    <nav class="liquid-dock" aria-label="Главное меню">
+      <button id="dock-tests" class="active" onclick="goPage('tests')"><span>⌂</span><span>Тесты</span></button>
+      <button id="dock-create" onclick="goPage('create')"><span>✦</span><span>Создать тест</span></button>
+      <button id="dock-results" onclick="goPage('results')"><span>◷</span><span>Результаты</span></button>
+      <button id="dock-chat" onclick="goPage('chat')"><span>💬</span><span>Общий чат</span></button>
+      <button id="dock-account" onclick="openAccountModal()"><span>◉</span><span id="dock-account-label">Аккаунт</span></button>
+    </nav>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    (() => {
+      const API='/api';
+      let token=localStorage.getItem('kitotest_token')||'';
+      let adminToken=localStorage.getItem('kitotest_admin_token')||'';
+      let me=null, socket=null, accountMode='login';
+      let anonymousToken=localStorage.getItem('kitotest_anon_token')||'';
+      let anonymousId=localStorage.getItem('kitotest_anon_id')||'';
+      const $=id=>document.getElementById(id);
+      async function api(path,options={}){const headers={'Content-Type':'application/json',...(options.headers||{})};if(token)headers.Authorization='Bearer '+token;const res=await fetch(API+path,{...options,headers});const data=await res.json().catch(()=>({error:'Сервер жауабы қате'}));if(!res.ok)throw new Error(data.error||'Қате орын алды');return data;}
+      window.enterWelcome=()=> $('welcome-screen').classList.add('dismissed');
+      window.goPage=page=>{if(['tests','create','results'].includes(page))switchTab(page);['tests','create','results','chat'].forEach(p=>{const sec=$('view-'+p);if(sec)sec.classList.toggle('hidden',p!==page);const b=$('dock-'+p);if(b)b.classList.toggle('active',p===page);});if(page==='chat')loadChat();};
+      window.openAccountModal=()=>{$('account-modal').classList.remove('hidden');$('account-error').textContent='';renderAccount();};
+      window.closeAccountModal=()=> $('account-modal').classList.add('hidden');
+      window.openAuthModal=(mode)=>{window.openAccountModal();if(mode==='admin')$('admin-login-area').classList.remove('hidden');};
+      window.toggleAdminLogin=()=>{$('admin-login-area').classList.toggle('hidden');$('admin-login-error').textContent='';};
+      window.submitAdminLogin=async()=>{ $('admin-login-error').textContent='';try{const r=await fetch(API+'/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:$('admin-code-input').value})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Қате');adminToken=d.token;localStorage.setItem('kitotest_admin_token',adminToken);state.user={name:'Админ',provider:'admin',isAdmin:true};updateHeaderAuth();renderCreateView();renderTests();$('admin-login-area').classList.add('hidden');$('admin-students-panel').classList.remove('hidden');$('admin-code-input').value='';await loadAdminStudents();showToast('Админ панелі ашылды.');}catch(e){$('admin-login-error').textContent=(e instanceof TypeError?'Серверге қосылу мүмкін болмады. Render серверінің жұмысын тексеріңіз.':e.message);}};
+      window.loadAdminStudents=async()=>{const box=$('admin-students-list');box.textContent='Жүктелуде...';try{const r=await fetch(API+'/admin/students',{headers:{Authorization:'Bearer '+adminToken}});const d=await r.json();if(!r.ok)throw new Error(d.error||'Қате');state.user={name:'Админ',provider:'admin',isAdmin:true};updateHeaderAuth();renderCreateView();renderTests();box.innerHTML='';if(!d.students.length){box.textContent='Әзірге тіркелген оқушы жоқ.';return;}d.students.forEach(st=>{const card=document.createElement('div');card.className='rounded-xl border border-white/10 bg-white/5 p-3';const nm=document.createElement('div');nm.className='font-semibold';nm.textContent=st.name;const em=document.createElement('div');em.className='text-white/65';em.textContent='Логин: '+st.email;const dt=document.createElement('div');dt.className='text-xs text-white/40 mt-1';dt.textContent='Тіркелген күні: '+new Date(st.createdAt).toLocaleString();const reset=document.createElement('button');reset.type='button';reset.className='mt-3 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs hover:bg-white/15';reset.textContent='Жаңа құпиясөз орнату';reset.addEventListener('click',()=>window.resetStudentPassword(st.id,st.name));card.append(nm,em,dt,reset);box.append(card);});}catch(e){box.textContent=e.message;}};
+      window.resetStudentPassword=async(id,name)=>{const password=window.prompt(name+' үшін жаңа уақытша құпиясөз енгізіңіз (кемінде 8 таңба):');if(password===null)return;if(password.length<8||password.length>72){window.alert('Құпиясөз 8–72 таңба болуы керек.');return;}try{const r=await fetch(API+'/admin/students/'+encodeURIComponent(id)+'/reset-password',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+adminToken},body:JSON.stringify({password})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Қате');window.alert('Жаңа құпиясөз орнатылды. Оқушыға осы құпиясөзді қауіпсіз түрде беріңіз.');}catch(e){window.alert(e.message);}};
+      let selectedLoginProvider='';
+      window.selectLoginProvider=provider=>{
+        selectedLoginProvider=provider;
+        $('provider-panel').classList.remove('hidden');
+        $('provider-logo').classList.toggle('hidden',provider!=='google');
+        $('provider-apple-logo').classList.toggle('hidden',provider!=='icloud');
+        $('provider-logo').alt='Google';
+        $('provider-heading').textContent=provider==='google'?'Gmail поштасымен жалғастыру':'iCloud поштасымен жалғастыру';
+        $('provider-email-label').textContent=provider==='google'?'Адрес Gmail':'Адрес Apple ID (iCloud)';
+        $('provider-email').placeholder=provider==='google'?'ваш-адрес@gmail.com':'ваш-адрес@icloud.com';
+        $('provider-email').value='';
+        $('provider-password').value='';
+        $('provider-name').value='';
+        $('provider-name-wrap').classList.add('hidden');
+        accountMode='login';$('provider-action').textContent='Войти';$('provider-mode-toggle').textContent='Аккаунт жоқ па? Құру';
+        $('provider-message').textContent='';
+      };
+      window.hideProviderPanel=()=>{$('provider-panel').classList.add('hidden');selectedLoginProvider='';};
+      window.toggleProviderMode=()=>{accountMode=accountMode==='login'?'register':'login';const registering=accountMode==='register';$('provider-name-wrap').classList.toggle('hidden',!registering);$('provider-action').textContent=registering?'Аккаунт құру':'Войти';$('provider-mode-toggle').textContent=registering?'Аккаунт бар ма? Кіру':'Аккаунт жоқ па? Құру';$('provider-message').textContent=registering?'Аккаунт құру үшін атыңызды, поштаңызды және KITOTEST паролін енгізіңіз.':'';};
+      window.submitProviderAccount=()=>{
+        const email=$('provider-email').value.trim().toLowerCase();
+        const password=$('provider-password').value;
+        const domain=selectedLoginProvider==='google'?'@gmail.com':'@icloud.com';
+        if(!email.endsWith(domain) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+          $('provider-message').textContent='Укажите полный '+domain+' адрес правильно.';
+          return;
+        }
+        if(!password){$('provider-message').textContent='Пароль KITOTESTн енгізіңіз.';return;}
+        const name=$('provider-name').value.trim();
+        if(accountMode==='register'&&!name){$('provider-message').textContent='Атыңызды енгізіңіз.';return;}
+        $('account-name').value=name;
+        $('account-email').value=email;
+        $('account-password').value=password;
+        $('account-form').requestSubmit();
+      };
+      window.setAccountMode=mode=>{accountMode='login';};
+      function renderAccount(){const logged=!!me;$('account-profile').classList.toggle('hidden',!logged);$('account-forms').classList.toggle('hidden',logged);$('account-title').textContent=logged?'Мой аккаунт':'Вход в аккаунт';if(logged){$('profile-name').textContent=me.name;$('profile-email').textContent=me.email;$('profile-avatar').textContent=(me.name||'K').slice(0,1).toUpperCase();$('profile-created').textContent='Тіркелген күні: '+new Date(me.createdAt).toLocaleDateString();$('dock-account-label').textContent=me.name.split(' ')[0].slice(0,9);}else $('dock-account-label').textContent='Аккаунт';}
+      $('account-form').addEventListener('submit',async e=>{e.preventDefault();$('account-error').textContent='';const body={email:$('account-email').value.trim(),password:$('account-password').value};if(accountMode==='register')body.name=$('account-name').value.trim();const endpoint=accountMode==='register'?'/auth/register':'/auth/login';try{const data=await api(endpoint,{method:'POST',body:JSON.stringify(body)});token=data.token;localStorage.setItem('kitotest_token',token);me=data.user;state.user={name:me.name,provider:'account',isAdmin:false};updateHeaderAuth();renderAccount();closeAccountModal();showToast(accountMode==='register'?'Аккаунт сәтті құрылды!':'Қош келдіңіз, '+me.name+'!');if(pendingSubjectKey)continueSubjectTest();}catch(err){$('account-error').textContent=err.message;}});
+      window.logoutReal=()=>{token='';me=null;state.user=null;localStorage.removeItem('kitotest_token');updateHeaderAuth();renderAccount();closeAccountModal();showToast('Аккаунттан шықтыңыз. Чаттағы аноним ID сақталады.');};
+      document.querySelectorAll('#auth-modal').forEach(el=>el.classList.add('hidden'));
+      async function ensureAnonymous(){const data=await fetch(API+'/anonymous/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:anonymousToken})}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||'Аноним ID алынбады');return d;});anonymousToken=data.token;anonymousId=data.anonymousId;localStorage.setItem('kitotest_anon_token',anonymousToken);localStorage.setItem('kitotest_anon_id',anonymousId);}
+      async function boot(){try{if(token){const data=await api('/me');me=data.user;state.user={name:me.name,provider:'account',isAdmin:false};updateHeaderAuth();renderAccount();}else renderAccount();if(adminToken){$('admin-students-panel').classList.remove('hidden');loadAdminStudents();}await ensureAnonymous();$('my-anon-id').textContent=anonymousId;connectChat();}catch(e){$('chat-status').textContent='Нет подключения к серверу';$('my-anon-id').textContent='Ошибка';console.error(e);}}
+      function connectChat(){if(socket||!anonymousToken)return;socket=io({auth:{anonymousToken}});socket.on('connect',()=>{$('chat-status').textContent='В сети';});socket.on('disconnect',()=>{$('chat-status').textContent='Переподключение...';});socket.on('connect_error',()=>{$('chat-status').textContent='Нет подключения к серверу';});socket.on('chat:history',messages=>{$('chat-messages').innerHTML='';if(!messages.length){$('chat-messages').innerHTML='<div class="chat-empty">Әзірге хабарлама жоқ. Бірінші болып жаз! 👋</div>';return;}messages.forEach(addMessage);scrollChat();});socket.on('chat:message',message=>{const empty=$('chat-messages').querySelector('.chat-empty');if(empty)empty.remove();addMessage(message);scrollChat();});socket.on('chat:online',count=>{$('chat-status').textContent='В сети · '+count;});socket.on('chat:error',data=>showToast(data.message||'Не удалось отправить сообщение'));}
+      function addMessage(m){const wrap=document.createElement('div');wrap.className='chat-message'+(m.anonymousId===anonymousId?' mine':'');const meta=document.createElement('div');meta.className='chat-meta';const name=document.createElement('span');name.className='chat-author';name.textContent=m.anonymousId||'ANON';const time=document.createElement('span');time.textContent=new Date(m.createdAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});meta.append(name,time);const body=document.createElement('div');body.className='chat-text';body.textContent=m.text;wrap.append(meta,body);$('chat-messages').appendChild(wrap);}
+      function scrollChat(){const box=$('chat-messages');box.scrollTop=box.scrollHeight;}
+      function loadChat(){if(!socket)connectChat();$('chat-status').textContent=socket&&socket.connected?'В сети':'Подключение...';}
+      $('chat-form').addEventListener('submit',e=>{e.preventDefault();const input=$('chat-input');const text=input.value.trim();if(!text)return;if(!socket||!socket.connected){showToast('Нет подключения к серверу. Подождите немного.');return;}socket.emit('chat:send',{text});input.value='';input.focus();});
+      window.handleGoogleCredential=async(response)=>{try{const r=await fetch(API+'/auth/google',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credential:response.credential})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Google кіру қатесі');token=d.token;localStorage.setItem('kitotest_token',token);me=d.user;state.user={name:me.name,provider:'account',isAdmin:false};updateHeaderAuth();renderAccount();closeAccountModal();showToast('Google арқылы қош келдіңіз, '+me.name+'!');}catch(e){$('account-error').textContent=e.message;}};
+      const GOOGLE_CLIENT_ID=window.KITOTEST_GOOGLE_CLIENT_ID||'';
+      if(GOOGLE_CLIENT_ID){const initGoogle=()=>{if(window.google?.accounts?.id){google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:window.handleGoogleCredential});}else setTimeout(initGoogle,300);};initGoogle();}
+      boot();
+    })();
+    </script>
+
+
+    <style>
+      #music-panel{position:fixed;inset:0;z-index:10050;display:flex;align-items:flex-end;justify-content:center;padding:14px;background:rgba(3,7,18,0);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);visibility:hidden;opacity:0;transition:opacity .35s ease,background .35s ease,backdrop-filter .35s ease,visibility .35s}
+      #music-panel.open{visibility:visible;opacity:1;background:rgba(3,7,18,.58);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+      .music-card{width:min(560px,100%);max-height:min(88vh,780px);overflow:auto;overscroll-behavior:contain;border:1px solid rgba(255,255,255,.17);border-radius:34px;padding:22px;background:linear-gradient(160deg,rgba(43,51,69,.97),rgba(14,18,30,.985) 72%);box-shadow:0 30px 100px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.12);color:#fff;transform:translateY(28px) scale(.975);opacity:.7;transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .32s ease}
+      #music-panel.open .music-card{transform:translateY(0) scale(1);opacity:1}
+      .music-topline{width:38px;height:5px;border-radius:99px;background:rgba(255,255,255,.25);margin:0 auto 20px}
+      .music-add{display:flex;align-items:center;gap:13px;width:100%;padding:14px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.075);text-align:left;transition:background .2s,transform .2s}
+      .music-add:active,.music-control:active,.music-track button:active{transform:scale(.96)}
+      .music-add:hover{background:rgba(255,255,255,.12)}
+      .music-add-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#8c9cff,#596be5);font-size:25px;box-shadow:0 6px 18px rgba(91,111,235,.28)}
+      .music-art{display:grid;place-items:center;width:100%;height:148px;border-radius:25px;margin:18px 0 14px;background:radial-gradient(circle at 50% 30%,rgba(180,193,255,.32),transparent 48%),linear-gradient(145deg,#313c59,#171e31);border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);font-size:54px}
+      .music-now-title{font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .music-subtitle{font-size:12px;color:rgba(255,255,255,.48);margin-top:3px}
+      .music-progress{width:100%;height:5px;border-radius:99px;appearance:none;background:rgba(255,255,255,.17);outline:none;cursor:pointer;margin:16px 0 5px}
+      .music-progress::-webkit-slider-thumb{appearance:none;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 6px #0008}
+      .music-progress::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:#fff}
+      .music-times{display:flex;justify-content:space-between;color:rgba(255,255,255,.42);font-size:10px;font-variant-numeric:tabular-nums}
+      .music-controls{display:flex;align-items:center;justify-content:center;gap:26px;margin:16px 0 20px}
+      .music-control{display:grid;place-items:center;border:0;color:white;background:transparent;font-size:24px;transition:transform .18s,opacity .18s;cursor:pointer}
+      .music-control.main{width:58px;height:58px;border-radius:50%;background:#fff;color:#202638;font-size:23px;box-shadow:0 8px 24px #0004}
+      .music-track{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid rgba(255,255,255,.075);border-radius:17px;background:rgba(255,255,255,.045);transition:background .2s,border-color .2s,transform .2s}
+      .music-track.active{background:rgba(139,157,255,.14);border-color:rgba(160,178,255,.32)}
+      .music-track .track-num{width:24px;text-align:center;color:rgba(255,255,255,.38);font-size:11px;font-variant-numeric:tabular-nums}
+      .music-track.active .track-num{color:#b9c5ff}
+      .music-track .track-name{min-width:0;flex:1;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .music-track button{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);color:#fff;transition:transform .18s,background .18s}
+      .music-track.active button{background:rgba(150,168,255,.25)}
+      @media(min-width:600px){#music-panel{align-items:center}.music-card{max-height:86vh}}
+      @media(prefers-reduced-motion:reduce){#music-panel,.music-card,.music-add,.music-track,.music-control{transition:none!important}}
+    </style>
+    <div id="music-panel" role="dialog" aria-modal="true" aria-labelledby="music-title" onclick="if(event.target===this)closeMusicPanel()">
+      <div class="music-card">
+        <div class="music-topline"></div>
+        <div class="flex items-center justify-between gap-3 mb-5">
+          <div><div class="text-[10px] uppercase tracking-[.24em] text-white/40 font-semibold">KITOTEST · PLAYER</div><h2 id="music-title" class="text-[27px] font-bold tracking-tight mt-1">Музыка</h2><p class="text-xs text-white/45 mt-1">Өзіңе ұнайтын әуенді тыңда</p></div>
+          <button type="button" onclick="closeMusicPanel()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/15 text-xl transition" aria-label="Жабу">×</button>
+        </div>
+        <label class="music-add cursor-pointer">
+          <span class="music-add-icon">＋</span><span class="flex-1"><span class="block font-semibold text-sm">Музыка қосу</span><span class="block text-xs text-white/45 mt-1">Құрылғыңнан аудио файлдарын таңда</span></span><span class="text-white/35 text-xl">›</span>
+          <input id="music-files" type="file" accept="audio/*" multiple class="hidden" onchange="addMusicFiles(this.files)">
+        </label>
+        <div class="music-art" aria-hidden="true">♫</div>
+        <div class="px-1">
+          <div id="music-now-title" class="music-now-title">Әзірге ән таңдалмады</div><div id="music-now-subtitle" class="music-subtitle">Тыңдау үшін тізімнен ән таңда</div>
+          <input id="music-progress" class="music-progress" type="range" min="0" max="1000" value="0" aria-label="Ән уақыты">
+          <div class="music-times"><span id="music-current-time">0:00</span><span id="music-duration">0:00</span></div>
+        </div>
+        <div class="music-controls">
+          <button class="music-control" type="button" onclick="musicPrev()" aria-label="Алдыңғы ән">|◀</button>
+          <button id="music-play-toggle" class="music-control main" type="button" onclick="musicToggle()" aria-label="Ойнату">▶</button>
+          <button class="music-control" type="button" onclick="musicNext()" aria-label="Келесі ән">▶|</button>
+        </div>
+        <div class="flex items-center justify-between mb-3"><span class="text-sm font-semibold">Әндер тізімі</span><span id="music-count" class="text-[11px] text-white/40">0 ән</span></div>
+        <div id="music-track-list" class="grid gap-2"><div class="text-center text-sm text-white/40 py-5">Әзірге музыка жоқ. Алдымен ән қосыңыз.</div></div>
+        <audio id="music-audio" preload="metadata" class="hidden"></audio>
+        <p class="text-[10px] text-white/30 text-center mt-4">Қосылған файлдар осы құрылғыда ғана ойнатылады.</p>
+      </div>
+    </div>
+    <script>
+      (()=>{
+        const tracks=[];let active=-1;const panel=document.getElementById('music-panel');const player=document.getElementById('music-audio');const progress=document.getElementById('music-progress');
+        const fmt=value=>{if(!Number.isFinite(value))return '0:00';const m=Math.floor(value/60),s=Math.floor(value%60);return m+':'+String(s).padStart(2,'0');};
+        window.openMusicPanel=()=>{panel.classList.add('open');document.body.style.overflow='hidden';};
+        window.closeMusicPanel=()=>{panel.classList.remove('open');document.body.style.overflow='';};
+        window.addMusicFiles=files=>{Array.from(files||[]).filter(f=>f.type.startsWith('audio/')).forEach(file=>tracks.push({name:file.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(file)}));renderMusicTracks();document.getElementById('music-files').value='';};
+        function renderMusicTracks(){const list=document.getElementById('music-track-list');document.getElementById('music-count').textContent=tracks.length+' ән';if(!tracks.length){list.innerHTML='<div class="text-center text-sm text-white/40 py-5">Әзірге музыка жоқ. Алдымен ән қосыңыз.</div>';return;}list.innerHTML='';tracks.forEach((track,index)=>{const row=document.createElement('div');row.className='music-track'+(active===index?' active':'');const num=document.createElement('span');num.className='track-num';num.textContent=String(index+1).padStart(2,'0');const name=document.createElement('span');name.className='track-name';name.textContent=track.name;const play=document.createElement('button');play.type='button';play.textContent=active===index&&!player.paused?'Ⅱ':'▶';play.setAttribute('aria-label',active===index&&!player.paused?'Тоқтату':'Ойнату');play.onclick=()=>{if(active===index&&!player.paused)player.pause();else playTrack(index);};row.append(num,name,play);list.append(row);});}
+        function playTrack(index){if(!tracks.length)return;active=(index+tracks.length)%tracks.length;player.src=tracks[active].url;document.getElementById('music-now-title').textContent=tracks[active].name;document.getElementById('music-now-subtitle').textContent='KITOTEST · Қазір ойнатылуда';player.play().catch(()=>{});renderMusicTracks();}
+        window.musicToggle=()=>{if(active<0){if(tracks.length)playTrack(0);return;}if(player.paused)player.play().catch(()=>{});else player.pause();};
+        window.musicPrev=()=>{if(tracks.length)playTrack(active<=0?tracks.length-1:active-1);};
+        window.musicNext=()=>{if(tracks.length)playTrack(active<0?0:(active+1)%tracks.length);};
+        player.addEventListener('timeupdate',()=>{if(Number.isFinite(player.duration)&&player.duration>0)progress.value=Math.round(player.currentTime/player.duration*1000);document.getElementById('music-current-time').textContent=fmt(player.currentTime);});
+        player.addEventListener('loadedmetadata',()=>{document.getElementById('music-duration').textContent=fmt(player.duration);progress.value=0;});
+        progress.addEventListener('input',()=>{if(Number.isFinite(player.duration)&&player.duration>0)player.currentTime=Number(progress.value)/1000*player.duration;});
+        player.addEventListener('ended',()=>{if(active>=0&&active+1<tracks.length)playTrack(active+1);else{player.currentTime=0;renderMusicTracks();}});
+        ['play','pause','ended'].forEach(event=>player.addEventListener(event,()=>{document.getElementById('music-play-toggle').textContent=player.paused?'▶':'Ⅱ';document.getElementById('music-play-toggle').setAttribute('aria-label',player.paused?'Ойнату':'Тоқтату');renderMusicTracks();}));
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closeMusicPanel();});
+      })();
+    </script>
+</body>
+</html>

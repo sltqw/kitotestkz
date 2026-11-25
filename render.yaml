@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: kitotest
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: kitotest-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_CODE
+        value: "111"
+      - key: GOOGLE_CLIENT_ID
+        sync: false
